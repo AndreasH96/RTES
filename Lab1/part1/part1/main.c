@@ -13,11 +13,31 @@ int main ()
   char out[33];
 
   /* Put all your test cases for the implemented functions here */
-  /* Test1: resetAll(iRegister)
+  /* Test1: *reg2str(iRegister)
+   */
+    r.content = 5;
+    printf("\nTest1: *reg2str(iRegister)\n");
+    printf("The value in register r is: %i \n", r.content);
+    char* reg2strReturn = reg2str(r);
+    printf("This in binary using *reg2str(iRegister) is: %s\n", reg2strReturn);
+    printf("Testing if the binary value is correct...\n");
+    int value = 0;
+    for(int i = 0; i < 32; i++){
+      if (reg2strReturn[i] == '1'){
+        value +=1;
+      }
+      else if (reg2strReturn[i] == '0')
+      {
+        value *=2;
+      }
+      
+    }
+    printf("%i\n", value);
+  /* Test2: resetAll(iRegister)
 
    */
-    printf("\nTest1: resetAll(iRegister *)\n");
-
+    printf("\nTest2: resetAll(iRegister *)\n");
+    
     
   return 0;
 }
