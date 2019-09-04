@@ -13,7 +13,11 @@ int main ()
   char out[33];
 
   /* Put all your test cases for the implemented functions here */
+  /* Test1: resetAll(iRegister)
 
-  printf ("\n");
+   */
+    printf("\nTest1: resetAll(iRegister *)\n");
+
+    
   return 0;
 }
