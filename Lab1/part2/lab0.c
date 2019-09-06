@@ -6,35 +6,34 @@
 
 #include <rpi3.h>
 #include <stdio.h>
-#include<time.h>
-
-void delay(unsigned int mseconds)
-{
-    clock_t goal = mseconds + clock();
-    while (goal > clock());
+#include <time.h>
+void delay(int cycles)
+{   
+    while (cycles-- > 0){
+        asm("");
+    };
 }
 
 int main()
 {
+    volatile int delayTime = 1000;
     /* Enable GPIO16 as an output */
-    GPIO->GPFSEL1 |= (1 << 16);
-    
+    GPIO->GPFSEL1 |= (1 << 18);
+     
     /* Turn LED on */
-    GPIO->GPSET1 |= (1 << 16);
-
-    int delayTime = 2;
-
+    GPIO->GPSET0 |= (1 << 16);
+    
     while(1) 
     {
         /* Iteratively turn on and off the LED */
-        //delay(delayTime);
+        delay(1000000);
         /* Turn LED off */
-        //GPIO->GPSET0 |= ~(1 << 16);
-        //delay(200);
+        GPIO->GPCLR0 |= (1 << 16);
+        delay(delayTime);
         /* Turn LED on */
-        //GPIO->GPSET0 |= (1 << 16);
+        GPIO->GPSET0 |= (1 << 16);
 
-        //delayTime *= 2;
+        delayTime *= 2;
     }
 
 	return 0;
