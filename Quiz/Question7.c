@@ -24,7 +24,7 @@ int main()
     A = B;
     stkTop = -1;
     stkFunc(-1, 10);
-    stkFunc(0, 5);
-    stkFunc(0, 10);
-    printf("%d\n", stkFunc(1, 0) + stkFunc(1, 0));
+    stkFunc(0, 5);  //inputs 5 into position 0
+    stkFunc(0, 10); // inputs 10 into position 1
+    printf("%d\n", stkFunc(1, 0) + stkFunc(1, 0)); // adds 10 to 5 printing 15
 }
