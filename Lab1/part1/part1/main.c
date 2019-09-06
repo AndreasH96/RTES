@@ -19,5 +19,7 @@ int main ()
     printf("\nTest1: resetAll(iRegister *)\n");
 
     
+
+    
   return 0;
 }
