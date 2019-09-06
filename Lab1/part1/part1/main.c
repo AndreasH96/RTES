@@ -6,33 +6,31 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "iregister.h"
+#include <string.h>
 
 int main ()
 {
   iRegister r;
   char out[33];
+  int testResults[10][4]; 
 
   /* Put all your test cases for the implemented functions here */
   /* Test1: *reg2str(iRegister)
    */
-    r.content = 5;
+    r.content = 12839238;
     printf("\nTest1: *reg2str(iRegister)\n");
     printf("The value in register r is: %i \n", r.content);
     char* reg2strReturn = reg2str(r);
-    printf("This in binary using *reg2str(iRegister) is: %s\n", reg2strReturn);
-    printf("Testing if the binary value is correct...\n");
-    int value = 0;
-    for(int i = 0; i < 32; i++){
-      if (reg2strReturn[i] == '1'){
-        value +=1;
-      }
-      else if (reg2strReturn[i] == '0')
-      {
-        value *=2;
-      }
-      
+    char expected [] = "00000000000000000000000000000101";
+    printf("The excpected output of *reg2st(iRegister) is: %s\n", expected);
+    printf("Output from *reg2str(iRegister) is: %s\n", reg2strReturn);
+    if(strcmp(expected, reg2strReturn)== 0){
+      printf("Test1, case 1 succeded\n");
+      testResults[0][0] = 1;  
     }
-    printf("%i\n", value);
+    
+    
+    
   /* Test2: resetAll(iRegister)
 
    */
