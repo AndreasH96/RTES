@@ -14,12 +14,12 @@ void resetAll(iRegister *theRegister)
 
 void setBit(int i, iRegister *theRegister)
 {
-	if (0 <= i <= 31)
+	if (0 <= i && i <= 31)
 	{
 		theRegister->content |= (1 << i);
 	}
 	else{
-		printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.");
+		printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.\n");
 	}
 }
 
@@ -30,28 +30,36 @@ void setAll(iRegister *theRegister)
 
 int getBit(int i, iRegister *theRegister)
 {
-	if (i <= 31)
+	if (0 <= i && i <= 31)
 	{
-		return theRegister->content & (1 << i);
+		return ((theRegister->content & (1 << i)) >> i);
 	}
 	return -1;
 }
 
 void assignNibble(int i, int value, iRegister *theRegister)
 {
-	if (0 <= i < 29)
-	{
-		theRegister->content |= (value << i); //test this
+	if (0 < i && i <= 8){		
+		i = (i-1)*4; // Position of first bit in each nibble
+		for(int j = 0; j < 4; j++){
+			if(value == 0){
+				theRegister->content &= ~(1 << i+j);
+			}else{
+				theRegister->content |= (1 << i+j);
+			}
+		}
 	}
 	else{
-		printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.");
+		printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.\n");
 	}
 }
+// Gör fram till hit
+
 
 int getNibble(int i, iRegister *theRegister)
 {
-	if (0<= i < 29)
-	{
+	if (0 < i && i <= 8){  // There's 8 nibbles
+		i = (i-1)*4; // Position of first bit in each nibble
 		return theRegister->content & (0xF << i);
 	}
 	return -1;
