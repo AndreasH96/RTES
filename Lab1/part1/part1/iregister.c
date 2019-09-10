@@ -19,7 +19,7 @@ void setBit(int i, iRegister *theRegister)
 		theRegister->content |= (1 << i);
 	}
 	else{
-		printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.");
+		printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.\n");
 	}
 }
 
@@ -30,7 +30,7 @@ void setAll(iRegister *theRegister)
 
 int getBit(int i, iRegister *theRegister)
 {
-	if (i <= 31)
+	if (0 <= i && i <= 31)
 	{
 		return ((theRegister->content & (1 << i)) >> i);
 	}
@@ -39,26 +39,31 @@ int getBit(int i, iRegister *theRegister)
 
 void assignNibble(int i, int value, iRegister *theRegister)
 {
-	if (0 <= i && i < 29)
-	{
-		theRegister->content |= (value << i); //test this
+	if (0 < i && i <= 8){		
+		i = (i-1)*4; // Position of first bit in each nibble
+		for(int j = 0; j < 4; j++){
+			if(value == 0){
+				theRegister->content &= ~(1 << i+j);
+			}else{
+				theRegister->content |= (1 << i+j);
+			}
+		}
 	}
 	else{
-		printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.");
+		printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.\n");
 	}
 }
+// Gör fram till hit
 
-// ANDREAS |
-//         V
+
 int getNibble(int i, iRegister *theRegister)
 {
-	if (0<= i && i < 29)
-	{
+	if (0 < i && i <= 8){  // There's 8 nibbles
+		i = (i-1)*4; // Position of first bit in each nibble
 		return theRegister->content & (0xF << i);
 	}
 	return -1;
 }
-
 
 char *reg2str(iRegister theRegister)
 {
@@ -80,24 +85,35 @@ char *reg2str(iRegister theRegister)
 
 void shiftRight(int i, iRegister *theRegister)
 {
+	int temp = theRegister->content & 1;
 	theRegister->content >>= i;
-	for(int j = 0; j < i ; j++){
-		resetBit(31 - j, theRegister);
+	if (temp)
+	{
+		setBit(31, theRegister);
 	}
-	
+	else if (!temp)
+	{
+		resetBit(31, theRegister);
+	}
 }
 
 void shiftLeft(int i, iRegister *theRegister)
 {
+	int temp = theRegister->content & (1 << 31);
 	theRegister->content <<= i;
-	for(int j = 0; j < i ; j++){
-		resetBit(j, theRegister);
+	if (temp)
+	{
+		setBit(0, theRegister);
+	}
+	else if (!temp)
+	{
+		resetBit(0, theRegister);
 	}
 }
 
 void resetBit(int i, iRegister *r)
 {
-	if(0 <= i && i < 32){
+	if(0 <= i < 32){
 		r->content &= ~(1 << i);
 	}
 	else{
