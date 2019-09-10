@@ -56,7 +56,16 @@ int getNibble(int, iRegister *);
  *  representing the corresponding bit of the iRegister, i.e., if the bit is set,
  *  then the character is "1" (ASCII char with code 49), or otherwise is "0" 
  *  (ASCII char with code 48)
+ * 
+ *  properties: 
+ *  the return of reg2str should be the binary representation of a integer value,
+ *  test cases:
+ *  1: Put value, no longer than 32 bits into the register. 
+ *     Then use reg2str and save the return value in a char*
+ *     Use strcmp(char*,char*) to determine if the function performed correctly.
+ *     If the return value from strcmp is 0 then the test i successfull.
  */
+
 char *reg2str(iRegister);
 
 

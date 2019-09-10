@@ -48,6 +48,8 @@ void assignNibble(int i, int value, iRegister *theRegister)
 	}
 }
 
+// ANDREAS |
+//         V
 int getNibble(int i, iRegister *theRegister)
 {
 	if (0<= i < 29)
@@ -56,6 +58,7 @@ int getNibble(int i, iRegister *theRegister)
 	}
 	return -1;
 }
+
 
 char *reg2str(iRegister theRegister)
 {
