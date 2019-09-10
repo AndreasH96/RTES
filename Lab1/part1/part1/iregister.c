@@ -14,7 +14,7 @@ void resetAll(iRegister *theRegister)
 
 void setBit(int i, iRegister *theRegister)
 {
-	if (0 <= i <= 31)
+	if (0 <= i && i <= 31)
 	{
 		theRegister->content |= (1 << i);
 	}
@@ -32,14 +32,14 @@ int getBit(int i, iRegister *theRegister)
 {
 	if (i <= 31)
 	{
-		return theRegister->content & (1 << i);
+		return ((theRegister->content & (1 << i)) >> i);
 	}
 	return -1;
 }
 
 void assignNibble(int i, int value, iRegister *theRegister)
 {
-	if (0 <= i < 29)
+	if (0 <= i && i < 29)
 	{
 		theRegister->content |= (value << i); //test this
 	}
@@ -52,7 +52,7 @@ void assignNibble(int i, int value, iRegister *theRegister)
 //         V
 int getNibble(int i, iRegister *theRegister)
 {
-	if (0<= i < 29)
+	if (0<= i && i < 29)
 	{
 		return theRegister->content & (0xF << i);
 	}
@@ -80,35 +80,24 @@ char *reg2str(iRegister theRegister)
 
 void shiftRight(int i, iRegister *theRegister)
 {
-	int temp = theRegister->content & 1;
 	theRegister->content >>= i;
-	if (temp)
-	{
-		setBit(31, theRegister);
+	for(int j = 0; j < i ; j++){
+		resetBit(31 - j, theRegister);
 	}
-	else if (!temp)
-	{
-		resetBit(31, theRegister);
-	}
+	
 }
 
 void shiftLeft(int i, iRegister *theRegister)
 {
-	int temp = theRegister->content & (1 << 31);
 	theRegister->content <<= i;
-	if (temp)
-	{
-		setBit(0, theRegister);
-	}
-	else if (!temp)
-	{
-		resetBit(0, theRegister);
+	for(int j = 0; j < i ; j++){
+		resetBit(j, theRegister);
 	}
 }
 
 void resetBit(int i, iRegister *r)
 {
-	if(0 <= i < 32){
+	if(0 <= i && i < 32){
 		r->content &= ~(1 << i);
 	}
 	else{
