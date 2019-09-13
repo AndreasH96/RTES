@@ -4,6 +4,8 @@
     All rights reserved.
 */
 
+// Assignment made by Karl-Johan Djervbrant and Andreas Häggström
+
 #include <rpi3.h>
 #include <stdio.h>
 #include <time.h>
