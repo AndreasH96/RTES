@@ -2,6 +2,10 @@
 //  Updated by Masoumeh Taromirad on 11/08/16.
 //  Updated by Wagner Morais and Johannes van Esch on 28/08/18.
 //  Copyright (c) 2014 by Mohammadreza Mousavi [mohmou]. All rights reserved.
+//
+//  Assignment made by Karl-Johan Djervbrant and Andreas Häggström
+//
+//  Comments for all tests can be found in iregister.h
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,40 +15,7 @@
 
 // Returns 1 if every bit is zero
 int test_isAllZero(iRegister reg){
-  static int status = 1;
-  for(int i = 0; i < 32; i++){
-    if(getBit(i, &reg) == 1){
-      status = 0;
-    }
-  }
-  return status;
-}
-
-// Returns 1 if the bit is one
-int test_isBitOne(int theBit, iRegister reg){
-  static int status = 0;
-  if(getBit(theBit, &reg) == 1){
-    status = 1;
-  }
-  return status;
-}
-
-// Returns 1 if every bit is zero
-int test_isAllOne(iRegister reg){
-  static int status = 1;
-  for(int i = 0; i < 32; i++){
-    if(getBit(i, &reg) == 0){
-      status = 0;
-    }
-  }
-  return status;
-}
-
-
-
-// Returns 1 if every bit is zero
-int test_isAllZero(iRegister reg){
-   int status = 1;
+  int status = 1;
   for(int i = 0; i < 32; i++){
     if(getBit(i, &reg) == 1){
       status = 0;
@@ -62,9 +33,9 @@ int test_isBitOne(int theBit, iRegister reg){
   return status;
 }
 
-// Returns 1 if every bit is zero
+// Returns 1 if every bit is one
 int test_isAllOne(iRegister reg){
-   int status = 1;
+  int status = 1;
   for(int i = 0; i < 32; i++){
     if(getBit(i, &reg) == 0){
       status = 0;
@@ -699,7 +670,7 @@ int main()
   printf("%s\n", reg2str(r));
   if(~test_isBitOne(randomBit, r)){
     printf("Test 10.1 succeded!\n");
-    testResults[9][0];
+    testResults[9][0] = 1;
   }else{
     printf("Test 10.1 failed...T\n");
   }

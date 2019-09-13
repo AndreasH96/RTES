@@ -2,6 +2,8 @@
 //  Updated by Masoumeh Taromirad on 11/08/16.
 //  Updated by Wagner Morais and Johannes van Esch on 28/08/18.
 //  Copyright (c) 2014 by Mohammadreza Mousavi [mohmou]. All rights reserved.
+//
+//  Assignment made by Karl-Johan Djervbrant and Andreas Häggström
 
 #ifndef lab0_iregister_h
 #define lab0_iregister_h
