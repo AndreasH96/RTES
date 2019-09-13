@@ -32,8 +32,9 @@ int getBit(int i, iRegister *theRegister)
 {
 	if (0 <= i && i <= 31)
 	{
-		return ((theRegister->content & (1 << i)) >> i);
+		return ((unsigned int) (theRegister->content & (1 << i)) >> i);
 	}
+	printf("%s\n","ERROR: Tried to call getBit(int i, iRegister *theRegister) with illegal input.\n");
 	return -1;
 }
 
@@ -53,7 +54,6 @@ void assignNibble(int i, int value, iRegister *theRegister)
 		printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.\n");
 	}
 }
-// Gör fram till hit
 
 
 int getNibble(int i, iRegister *theRegister)
@@ -68,7 +68,7 @@ int getNibble(int i, iRegister *theRegister)
 char *reg2str(iRegister theRegister)
 {
 	
-	char *returnString = malloc(32);
+	char *returnString = calloc(32, sizeof(char));
 	for (int i = 0; i < 32; i++)
 	{
 		if (theRegister.content & (1 << i))
@@ -85,35 +85,27 @@ char *reg2str(iRegister theRegister)
 
 void shiftRight(int i, iRegister *theRegister)
 {
-	int temp = theRegister->content & 1;
 	theRegister->content >>= i;
-	if (temp)
-	{
-		setBit(31, theRegister);
+	for( int j = 0; j < i ; j ++){
+		resetBit(31 - j, theRegister);
 	}
-	else if (!temp)
-	{
-		resetBit(31, theRegister);
-	}
+	
+	
 }
 
 void shiftLeft(int i, iRegister *theRegister)
 {
-	int temp = theRegister->content & (1 << 31);
 	theRegister->content <<= i;
-	if (temp)
-	{
-		setBit(0, theRegister);
+	for(int j = 0; j < i; j++){
+		resetBit(j, theRegister);
 	}
-	else if (!temp)
-	{
-		resetBit(0, theRegister);
-	}
+		
+	
 }
 
 void resetBit(int i, iRegister *r)
 {
-	if(0 <= i < 32){
+	if(0 <= i && i < 32){
 		r->content &= ~(1 << i);
 	}
 	else{
