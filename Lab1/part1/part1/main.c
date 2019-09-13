@@ -11,7 +11,7 @@
 
 // Returns 1 if every bit is zero
 int test_isAllZero(iRegister reg){
-  static int status = 1;
+   int status = 1;
   for(int i = 0; i < 32; i++){
     if(getBit(i, &reg) == 1){
       status = 0;
@@ -22,7 +22,7 @@ int test_isAllZero(iRegister reg){
 
 // Returns 1 if the bit is one
 int test_isBitOne(int theBit, iRegister reg){
-  static int status = 0;
+  int status = 0;
   if(getBit(theBit, &reg) == 1){
     status = 1;
   }
@@ -31,13 +31,43 @@ int test_isBitOne(int theBit, iRegister reg){
 
 // Returns 1 if every bit is zero
 int test_isAllOne(iRegister reg){
-  static int status = 1;
+   int status = 1;
   for(int i = 0; i < 32; i++){
     if(getBit(i, &reg) == 0){
       status = 0;
     }
   }
   return status;
+}
+
+void presentTests(int theResults[][4]){
+  printf("%s\n", "Case:      1    2    3    4");
+
+  for(int i = 0 ; i < 10 ; i++){
+
+    printf("%s %i","Test:",(i+1));
+
+    for(int j = 0; j < 4 ; j++){
+      if(*((*(theResults)) + (i * 4 + j))){
+        if(i == 9 && j == 0){
+          printf("%s", "   √");  
+        }
+        else{
+          printf("%s", "    √");
+        }
+        
+      }
+      else{
+        if(i == 10 && j == 1){
+          printf("%s", "   X");
+        }
+        else{
+          printf("%s", "    X");
+        }
+      }
+    }
+    printf("\n");
+  }
 }
 
 /*returns 1 if the value of the nibble at position pos is equal to the
@@ -67,6 +97,7 @@ int main()
      
   /* Test1: resetAll(iRegister)
    */
+  
   printf("Test 1: resetAll(iRegister *)\n");
   // Test 1.1
   printf("\nRunning Test 1.1 ...\n");
@@ -142,11 +173,11 @@ int main()
     printf("Test 2.1 succeded!\n");
     testResults[1][0];
   }else{
-    printf("Test 2.1 failed...\n");
+    printf("Test 2.1 failed...T\n");
   }
   
   // Test 2.2
-  printf("\nRunning Test 2.2 ... \n");
+  printf("\nRunning Test 2.2 ... \nExpecting ERROR\n");
   resetAll(&r);
   printf("%s\n", reg2str(r));
   setBit(-1, &r);
@@ -169,6 +200,7 @@ int main()
   status += test_isBitOne(0, r);
   status += test_isBitOne(15, r);
   status += test_isBitOne(31, r);
+  printf("%i", status);
   if(status == 3){
     printf("Test 2.3 succeded!\n");
     testResults[1][2] = 1;
@@ -286,7 +318,7 @@ int main()
   }
 
   // Test 4.3
-  printf("\nRunning Test 4.3 ...\n");
+  printf("\nRunning Test 4.3 ...\nExpecting ERROR\n");
   resetAll(&r);
   if(getBit(33, &r) == -1){
     printf("Test 4.3 succeded!\n");
@@ -296,7 +328,7 @@ int main()
   }
 
   // Test 4.4
-  printf("\nRunning Test 4.4 ...\n");
+  printf("\nRunning Test 4.4 ...\n\nExpecting ERROR\n");
   resetAll(&r);
   if(getBit(33, &r) == -1){
     printf("Test 4.4 succeded!\n");
@@ -337,8 +369,8 @@ int main()
   }else{
     printf("Test 5.2 failed...\n");
   }
-
-  printf("\nRunning Test 5.3 ...\n");
+  // Test 5.3
+  printf("\nRunning Test 5.3 ...\nExpecting ERROR\n");
   resetAll(&r);
   assignNibble(9, 1, &r);
   if(test_isAllZero(r)){
@@ -347,8 +379,8 @@ int main()
   }else{
     printf("Test 5.3 failed...\n");
   }
-
-  printf("\nRunning Test 5.4 ...\n");
+  // Test 5.4
+  printf("\nRunning Test 5.4 ...\n\nExpecting ERROR\n");
   resetAll(&r);
   assignNibble(-1, 1, &r);
   if(test_isAllZero(r)){
@@ -364,8 +396,11 @@ int main()
    */
   /* Test 6.1: Assign value using assignNibble, then check if getNibble returns correctly*/
   printf("\nTest 6: getNibble(int, int , iRegister*)\n");
+
+  printf("\nRunning Test 6.1 ...\n");
   resetAll(&r);
   assignNibble(5,15,&r);
+  printf("%s", reg2str(r));
   signed int returnNibble = getNibble(5, &r);
   if (testNibbleValue(5,returnNibble,r)){
     testResults[5][0] = 1;
@@ -377,8 +412,8 @@ int main()
   }
 
   /* Test 6.2: Try to get Nibble outside of the register */
-
-  returnNibble = getNibble(32, &r);
+  printf("\nRunning Test 6.2 ...\nExpecting ERROR\n");
+  returnNibble = getNibble(9, &r);
 
   if(returnNibble == -1){
     testResults[5][1] = 1;
@@ -391,9 +426,9 @@ int main()
   }
   
   /* Test 6.3: Try to give negative input for the position */
-
+  printf("\nRunning Test 6.3 ...\nExpecting ERROR\n");
   returnNibble = 0;
-  returnNibble = getNibble(-5, &r);
+  returnNibble = getNibble(-1, &r);
    if(returnNibble == -1){
     testResults[5][2] = 1;
     printf("Test 6.3 succeded\n");
@@ -405,13 +440,13 @@ int main()
   }
 
   /* Test 6.4: Test so that getNibble only returns 4 bits */
-  resetAll(&r);
-  assignNibble(5,15,&r);
+  printf("\nRunning Test 6.4 ...\n");
+
+  setAll(&r);
   returnNibble = getNibble (5, &r);
   int amountOfBits = 0;
-  
-  for( int i = 0; i < (sizeof(returnNibble) * 4); i ++){
-    if(getBit(i, &r)){
+  for( int i = 0; i < (sizeof(returnNibble) * 8); i ++){
+    if((returnNibble >> i) & (1) ){
       amountOfBits += 1;
     }
   }
@@ -429,7 +464,7 @@ int main()
   r.content = 12839238;
   printf("\nTest 7: *reg2str(iRegister)\n");
 
-  // Test 7.1: Test for correct return value length
+  // Test 7.1: Test for correct return value 
   char *reg2strReturn = reg2str(r);
   char expected[] = "00000000110000111110100101000110";
   if (strcmp(expected, reg2strReturn) == 0)
@@ -481,7 +516,9 @@ int main()
   /* Test 8.1: Basic shift test. */
   resetAll(&r);
   setBit(15, &r);
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftRight(1, &r);
+  printf("%s %s\n", "Register after shift:", reg2str(r));
   if(getBit(14, &r)){
     printf("Test 8.1 succeded\n");
     testResults[7][0] = 1;
@@ -494,9 +531,10 @@ int main()
   
   /* Test 8.2: Test that a 0 is shifted from the left */
   setAll(&r);
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   if(getBit(31, &r)){
     shiftRight(1,&r);
-
+    printf("%s %s\n", "Register after shift:", reg2str(r));
     if(~getBit(31,&r)){
       printf("Test 8.2 succeded\n");
       testResults[7][1] = 1;  
@@ -514,9 +552,9 @@ int main()
   
   /* Test 8.3: Test that if 31 shifts are made then the register is zero*/
   setAll(&r);
-  
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftRight(32, &r);
-
+  printf("%s %s\n", "Register after shift:", reg2str(r));
   if(test_isAllZero(r)){
     printf("Test 8.3 succeded\n");
     testResults[7][2] = 1;  
@@ -528,10 +566,11 @@ int main()
   
   /* Test 8.4: Test that the bit is not in the same place after one shift*/
   resetAll(&r);
-
+  
   setBit(10, &r);
-
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftRight(1, &r);
+  printf("%s %s\n", "Register after shift:", reg2str(r));
 
   if(~getBit(10, &r)){
     printf("Test 8.4 succeded\n");
@@ -549,7 +588,9 @@ int main()
   /* Test 9.1: Basic shift test. */
   resetAll(&r);
   setBit(15, &r);
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftLeft(1, &r);
+  printf("%s %s\n", "Register after shift:", reg2str(r));
   if(getBit(16, &r)){
     printf("Test 9.1 succeded\n");
     testResults[8][0] = 1;
@@ -562,9 +603,10 @@ int main()
   
   /* Test 9.2: Test that a 0 is shifted from the right */
   setAll(&r);
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   if(getBit(0, &r)){
     shiftLeft(1,&r);
-
+    printf("%s %s\n", "Register after shift:", reg2str(r));
     if(~getBit(0,&r)){
       printf("Test 9.2 succeded\n");
       testResults[8][1] = 1;  
@@ -582,9 +624,9 @@ int main()
   
   /* Test 9.3: Test that if 31 shifts are made then the register is zero*/
   setAll(&r);
-  
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftLeft(32, &r);
-
+  printf("%s %s\n", "Register after shift:", reg2str(r));
   if(test_isAllZero(r)){
     printf("Test 9.3 succeded\n");
     testResults[8][2] = 1;  
@@ -598,9 +640,9 @@ int main()
   resetAll(&r);
 
   setBit(10, &r);
-
+  printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftLeft(1, &r);
-
+  printf("%s %s\n", "Register after shift:", reg2str(r));
   if(~getBit(10, &r)){
     printf("Test 9.4 succeded\n");
     testResults[8][3] = 1;  
@@ -612,8 +654,83 @@ int main()
 
   /* Test 10: resetBit(int, iRegister*) */
 
+  printf("\nTest 10: resetBit(int, iRegister*)\n");
   
+  // Test 10.1
+  printf("\nRunning Test 10.1 ... \n");
+  setAll(&r);
+  printf("%s %s\n", "Register before reset:", reg2str(r));
+  randomBit = rand()%32;
+  resetBit(randomBit, &r);
+  printf("%s %s\n", "Register after reset:", reg2str(r));
+  printf("%s\n", reg2str(r));
+  if(~test_isBitOne(randomBit, r)){
+    printf("Test 10.1 succeded!\n");
+    testResults[9][0];
+  }else{
+    printf("Test 10.1 failed...T\n");
+  }
+  
+  // Test 10.2
+  printf("\nRunning Test 10.2 ... \nExpecting ERROR\n");
+  setAll(&r);
+  printf("%s %s\n", "Register before reset:", reg2str(r));
+  resetBit(-1, &r);
+  printf("%s %s\n", "Register after reset:", reg2str(r));
+  if(test_isAllOne(r)){
+    printf("Test 10.2 succeded!\n");
+    testResults[9][1] = 1;
+  }else{
+    printf("Test 10.2 failed...\n");
+  }
 
-  
+  // Test 10.3
+  printf("\nRunning Test 10.3 ...\n");
+  setAll(&r);
+  printf("%s %s\n", "Register before reset:", reg2str(r));
+  resetBit(0, &r);
+  resetBit(15, &r);
+  resetBit(31, &r);
+  printf("Reset bit 0, 15 and 31 with resetBit: %s\n", reg2str(r));
+  status = 0;
+  printf("%i\n", test_isBitOne(0, r));
+  status += test_isBitOne(0, r);
+  status += test_isBitOne(15, r);
+  status += test_isBitOne(31, r);
+  printf("%i" , status);
+  if(status == 0){
+    printf("Test 10.3 succeded!\n");
+    testResults[9][2] = 1;
+  }else{
+    printf("Test 10.3 failed...\n");
+  }
+
+  // Test 10.4
+  printf("\nRunning Test 10.4 ...\n");
+  setAll(&r);
+  printf("%s %s\n", "Register before reset:", reg2str(r));
+  for(int i = 0; i < 32; i++){
+    if(i % 2 == 0){
+      resetBit(i, &r);
+    }
+  }
+  printf("Reset every other bit with resetBit: %s\n", (char*) reg2str(r));
+  status = 0;
+  for(int i = 0; i < 32; i++){
+    if(i % 2 == 0){
+      status += test_isBitOne(i, r);
+    }
+  }
+  if(status == 0){
+    printf("Test 10.4 succeded!\n");
+    testResults[1][3] = 1;
+  }else{
+    printf("Test 10.4 failed...\n");
+  }
+
+
+  // Overall Test Presentation
+
+  presentTests(testResults);
   return 0;
 }
