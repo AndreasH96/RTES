@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-struct expStruct {
+typedef struct  {
 int expInt;
 int expFraction;
-};
+}ExpStruct;
 
-typedef struct expStruct ExpStruct;
+//typedef struct expStruct ExpStruct;
 
 /* 
 @description Calculates the value of e^n where n is the input value with two degrees of precision. Returns in a struct 
@@ -21,3 +21,5 @@ expFraction will be the two first decimal values of the result.
 
 */
 ExpStruct * iexp ( int );
+
+int powerOf(int, int);
