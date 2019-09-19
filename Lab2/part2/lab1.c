@@ -18,12 +18,10 @@ int main()
     
     /* Write to PiFace's LCD screen */    
     //piface_puts("Hello World!\n");
-    
     piface_clear();
-    piface_putc(0x41);
-    piface_putc(0x42);
-    piface_putc(0x43);
-    piface_putc(0x44);
+    piface_putc('1');
+    piface_putc(2);
+
     
     while (1)
     {

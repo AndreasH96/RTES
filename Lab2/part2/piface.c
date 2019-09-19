@@ -9,7 +9,7 @@
 #include <string.h>
 #include <rpi3.h>
 #include "piface.h"
-
+volatile uint8_t cursorPosition = 0;
 /* Bit-Banging SPI Driver */
 static void spi_init(void)
 {
@@ -176,9 +176,10 @@ static void lcd_init(void)
 	lcd_write_cmd( 0x06 );
     /* dislay on/off; D = 1 for display on, C = 1 for cursor on; B = 0 for blinking off*/
 	lcd_write_cmd( 0x0E );
+	
 }
 
-__attribute__((constructor))
+__attribute__((constructor))	// init is called when library is loaded
 void piface_init(void)
 {
 	spi_init();
@@ -193,20 +194,22 @@ uint8_t piface_getc(void)
 
 void piface_putc(char c)
 {
-	/* write character */
+	if( 0<= c && c <= 9){
+		c += 0x30;
+	}
 	
-	// Function Set: DL=1 (8-bit data length), N=1 (2-line display), F=don't care (if N=1)
-	lcd_write_cmd(0x38);
-	LCD_DELAY;
-	// Set DB7=1 to write from DDRAM
-	lcd_write_cmd(0x40);
-	LCD_DELAY;
+	if( cursorPosition == 16){
+		lcd_write_cmd(0x80 | 0x40);
+	}
+	else if(cursorPosition == 32){
+		lcd_write_cmd(0x80);
+		cursorPosition = 0;
+	}
+	
+	/* write character */
 	lcd_write_data(c);
 	LCD_DELAY;
-	lcd_write_cmd(0xA4);
-	LCD_DELAY;
-	lcd_write_data(c);
-	LCD_DELAY;
+	cursorPosition += 1;
 }
 
 void piface_puts(char s[])
@@ -217,6 +220,9 @@ void piface_puts(char s[])
 void piface_clear(void)
 {
     /* clear display */
-	lcd_write_cmd(0x01);
+	//lcd_write_cmd(0x01);
+	// Set DB7=1 to write to DDRAM
+	lcd_write_cmd(0x80);
+	
 }
 
