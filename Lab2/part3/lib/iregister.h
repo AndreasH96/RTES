@@ -5,8 +5,8 @@
 //
 //  Assignment made by Karl-Johan Djervbrant and Andreas Häggström
 
-#ifndef lab0_iregister_h
-#define lab0_iregister_h
+#ifndef lab1_3_iregister_h
+#define lab1_3_iregister_h
 
 /**
  *  iRegister
@@ -14,7 +14,7 @@
  *  is equipped with standard operations to modify and display them.
  */ 
 typedef struct{
-    int content;
+   unsigned int content;
 } iRegister;
 
 /**

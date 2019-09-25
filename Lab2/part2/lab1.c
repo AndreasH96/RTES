@@ -6,27 +6,26 @@
 
 #include <stdio.h>
 #include <rpi3.h>
+#include <string.h>
 #include "piface.h"
+#include <taylorSeries.h>
 
 int main()
 {
-    /* Enable GPIO16 as an output */
-    //GPIO->GPFSEL1 |= (1 << 18);
-    
-    /* Turn LED on */
-    //GPIO->GPSET0 |= (1 << 16);
-    
     /* Write to PiFace's LCD screen */    
-    //piface_puts("Hello World!\n");
-    
-    piface_clear();
-    piface_putc(0x41);
-    piface_putc(0x42);
-    piface_putc(0x43);
-    piface_putc(0x44);
+    piface_puts("Hello World!\n");
+
+    volatile uint8_t taylorInput = 1;
     
     while (1)
     {
+        piface_clear();
+        ExpStruct* result = iexp(taylorInput);
+        char printString [16];
+        sprintf(printString, "%d: %d.%d", taylorInput, result->expInt, result->expFraction);
+        piface_puts(printString);
+        taylorInput +=1;
+        piface_delay(10000000);
         
     }
 

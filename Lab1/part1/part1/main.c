@@ -522,7 +522,7 @@ int main()
   setBit(15, &r);
   printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftRight(1, &r);
-  printf("%s %s\n", "Register after shift:", reg2str(r));
+  printf("%s %s\n", "Register after shift: ", reg2str(r));
   if(getBit(14, &r)){
     printf("Test 8.1 succeded\n");
     testResults[7][0] = 1;
@@ -538,7 +538,7 @@ int main()
   printf("%s %s\n", "Register before shift:", reg2str(r));
   if(getBit(31, &r)){
     shiftRight(1,&r);
-    printf("%s %s\n", "Register after shift:", reg2str(r));
+    printf("%s %s\n", "Register after shift: ", reg2str(r));
     if(~getBit(31,&r)){
       printf("Test 8.2 succeded\n");
       testResults[7][1] = 1;  
@@ -558,7 +558,7 @@ int main()
   setAll(&r);
   printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftRight(32, &r);
-  printf("%s %s\n", "Register after shift:", reg2str(r));
+  printf("%s %s\n", "Register after shift: ", reg2str(r));
   if(test_isAllZero(r)){
     printf("Test 8.3 succeded\n");
     testResults[7][2] = 1;  
@@ -574,7 +574,7 @@ int main()
   setBit(10, &r);
   printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftRight(1, &r);
-  printf("%s %s\n", "Register after shift:", reg2str(r));
+  printf("%s %s\n", "Register after shift: ", reg2str(r));
 
   if(~getBit(10, &r)){
     printf("Test 8.4 succeded\n");
@@ -594,7 +594,7 @@ int main()
   setBit(15, &r);
   printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftLeft(1, &r);
-  printf("%s %s\n", "Register after shift:", reg2str(r));
+  printf("%s %s\n", "Register after shift: ", reg2str(r));
   if(getBit(16, &r)){
     printf("Test 9.1 succeded\n");
     testResults[8][0] = 1;
@@ -610,7 +610,7 @@ int main()
   printf("%s %s\n", "Register before shift:", reg2str(r));
   if(getBit(0, &r)){
     shiftLeft(1,&r);
-    printf("%s %s\n", "Register after shift:", reg2str(r));
+    printf("%s %s\n", "Register after shift: ", reg2str(r));
     if(~getBit(0,&r)){
       printf("Test 9.2 succeded\n");
       testResults[8][1] = 1;  
@@ -630,7 +630,7 @@ int main()
   setAll(&r);
   printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftLeft(32, &r);
-  printf("%s %s\n", "Register after shift:", reg2str(r));
+  printf("%s %s\n", "Register after shift: ", reg2str(r));
   if(test_isAllZero(r)){
     printf("Test 9.3 succeded\n");
     testResults[8][2] = 1;  
@@ -646,7 +646,7 @@ int main()
   setBit(10, &r);
   printf("%s %s\n", "Register before shift:", reg2str(r));
   shiftLeft(1, &r);
-  printf("%s %s\n", "Register after shift:", reg2str(r));
+  printf("%s %s\n", "Register after shift: ", reg2str(r));
   if(~getBit(10, &r)){
     printf("Test 9.4 succeded\n");
     testResults[8][3] = 1;  

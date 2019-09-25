@@ -1,6 +1,6 @@
 # Makefile for Raspberry Pi 3
 
-OBJS	= lib/startup.o lib/syscalls.o lab1.o piface.o lib/taylorSeries.o
+OBJS	= lib/startup.o lib/syscalls.o lab1_3.o piface.o lib/taylorSeries.o lib/iregister.o lib/led.o
 ELF	    = rteskernel.elf
 MAIN	= rteskernel.img
 
@@ -10,7 +10,7 @@ SIZE	= $(CROSS)size
 OCOPY	= $(CROSS)objcopy
 
 CFLAGS	= -march=armv8-a -mfpu=vfp -mfloat-abi=soft -ffunction-sections -fdata-sections -fno-common -g -std=gnu99 -Wall -Wextra -Os -Ilib
-LFLAGS	= -static -nostartfiles -lc -lgcc -specs=nano.specs -Wl,--gc-sections
+LFLAGS	= -static -nostartfiles -lc -lgcc -specs=nano.specs -Wl,--gc-sections 
 LSCRIPT	= lib/rpi3.ld
 
 .PHONY: all clean run

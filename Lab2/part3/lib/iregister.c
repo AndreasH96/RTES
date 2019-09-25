@@ -12,7 +12,7 @@
 // iRegister is 32-bits, we "and" the register with an empty register to set all bits to 0.
 void resetAll(iRegister *theRegister)
 {
-	theRegister->content &= 0x00000000;
+	theRegister->content = 0x00000000;
 }
 
 // Leftshift a 1, i times to set the bit. If the pre-condition 0<= i < 32 is violated it prints an error message
@@ -23,14 +23,16 @@ void setBit(int i, iRegister *theRegister)
 		theRegister->content |= (1 << i);
 	}
 	else{
-		printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.\n");
+		#if __x86_64__
+			printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.\n");
+		#endif
 	}
 }
 
 // iRegister is 32-bits, we "or" the register with a "full" register to set all bits to 1.
 void setAll(iRegister *theRegister)
 {
-	theRegister->content |= 0xFFFFFFFF;
+	theRegister->content = 0xFFFFFFFF;
 }
 
 // We mask out the corresponding bit, but to get it as decimal value 1, we shift it back i times. If the pre-condition 0<= i < 32 is violated it prints an error message.
@@ -40,7 +42,9 @@ int getBit(int i, iRegister *theRegister)
 	{
 		return ((unsigned int) (theRegister->content & (1 << i)) >> i);
 	}
-	printf("%s\n","ERROR: Tried to call getBit(int i, iRegister *theRegister) with illegal input.\n");
+	#if __x86_64__
+		printf("%s\n","ERROR: Tried to call getBit(int i, iRegister *theRegister) with illegal input.\n");
+	#endif
 	return -1;
 }
 
@@ -58,8 +62,10 @@ void assignNibble(int i, int value, iRegister *theRegister)
 		}
 	}
 	else{
-		printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.\n");
-	}
+		#if __x86_64__
+			printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.\n");
+		#endif
+		}
 }
 
 // First we make sure the i value is in the correct value range, then calculate at which bit the nibble starts at, then mask out the bits with a nibble of ones
@@ -75,7 +81,7 @@ int getNibble(int i, iRegister *theRegister)
 // First we allocate memory for the string, then for every bit in the register we mask out the bit and stores the corresponding ascii value in the string.
 char *reg2str(iRegister theRegister)
 {	
-	char *returnString = calloc(32, sizeof(char));
+	char *returnString = calloc(33, sizeof(char));
 	for (int i = 0; i < 32; i++)
 	{
 		if (theRegister.content & (1 << i))
@@ -93,18 +99,22 @@ char *reg2str(iRegister theRegister)
 // shifts the register to the right i times, then for every rightshift we reset the each "new" incomming bit from the left
 void shiftRight(int i, iRegister *theRegister)
 {
-	theRegister->content >>= i;
-	for( int j = 0; j < i ; j ++){
-		resetBit(31 - j, theRegister);
+	if(i%32 == 0){
+		resetAll(theRegister);
+	}
+	else{
+		theRegister->content >>= i;
 	}
 }
 
 // Same as with shift right bit now with leftshift
 void shiftLeft(int i, iRegister *theRegister)
 {
-	theRegister->content <<= i;
-	for(int j = 0; j < i; j++){
-		resetBit(j, theRegister);
+	if(i%32 == 0){
+		resetAll(theRegister);
+	}
+	else{
+		theRegister->content <<= i;
 	}
 }
 
@@ -115,6 +125,8 @@ void resetBit(int i, iRegister *r)
 		r->content &= ~(1 << i);
 	}
 	else{
-		printf("ERROR: Tried to call resetBit(int, iRegister *) with illegal input."); 
+		#if __x86_64__
+			printf("ERROR: Tried to call resetBit(int, iRegister *) with illegal input."); 
+		#endif
 	}
 }

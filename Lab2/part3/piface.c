@@ -13,20 +13,20 @@ volatile uint8_t cursorPosition = 0;
 /* Bit-Banging SPI Driver */
 static void spi_init(void)
 {
-	GPIO->GPFSEL0 |= (1 << 21);			        /* GPIO  7,  9 */
-	GPIO->GPFSEL1 |= (1 <<  0) | (1 <<  3);		/* GPIO 10, 11 */
-	GPIO->GPSET0 = (1 << 7);			        /* /CE high */
-	GPIO->GPCLR0 = (1 << 11);			        /* CLK low */
+	GPIO->GPFSEL0 |= (1 << 21);			  /* GPIO  7,  9 */
+	GPIO->GPFSEL1 |= (1 << 0) | (1 << 3); /* GPIO 10, 11 */
+	GPIO->GPSET0 = (1 << 7);			  /* /CE high */
+	GPIO->GPCLR0 = (1 << 11);			  /* CLK low */
 }
 
 static void spi_start(void)
 {
-	GPIO->GPCLR0 = (1 << 7);			        /* /CE low  */
+	GPIO->GPCLR0 = (1 << 7); /* /CE low  */
 }
 
 static void spi_stop(void)
 {
-	GPIO->GPSET0 = (1 << 7);			        /* /CE high */
+	GPIO->GPSET0 = (1 << 7); /* /CE high */
 }
 
 static void spi_byte(const uint8_t out, uint8_t *in)
@@ -34,19 +34,20 @@ static void spi_byte(const uint8_t out, uint8_t *in)
 	uint8_t tmpin = 0, tmpout = out;
 
 	/* clock each bit out and read back */
-	for(int i = 0; i < 8; i++) {
+	for (int i = 0; i < 8; i++)
+	{
 		tmpin <<= 1;
 
-		if(tmpout & 0x80) 
-			GPIO->GPSET0 = (1 << 10);	// set MOSI
-		else              
+		if (tmpout & 0x80)
+			GPIO->GPSET0 = (1 << 10); // set MOSI
+		else
 			GPIO->GPCLR0 = (1 << 10);
 
-		if(GPIO->GPLEV0 & (1 << 9)) 
-			tmpin |= 1;		// read MISO
-		
-		GPIO->GPSET0 = (1 << 11);			// set CLK
-		GPIO->GPCLR0 = (1 << 11);			// clear CLK
+		if (GPIO->GPLEV0 & (1 << 9))
+			tmpin |= 1; // read MISO
+
+		GPIO->GPSET0 = (1 << 11); // set CLK
+		GPIO->GPCLR0 = (1 << 11); // clear CLK
 
 		tmpout <<= 1;
 	}
@@ -89,8 +90,12 @@ static void mcp_init(void)
 	mcp_write(MCP_IODIRB, 0x00);
 }
 
-#define LCD_DELAY \
-	do { for(volatile int DELAYx = 0; DELAYx < 5000; DELAYx++); } while(0);
+#define LCD_DELAY                                              \
+	do                                                         \
+	{                                                          \
+		for (volatile int DELAYx = 0; DELAYx < 5000; DELAYx++) \
+			;                                                  \
+	} while (0);
 
 static uint8_t lcd_read_busy_flag_register()
 {
@@ -123,64 +128,63 @@ static void lcd_busy_wait()
 
 static void lcd_pulse(uint8_t val)
 {
-	mcp_write(MCP_GPIOB, val | LCD_EN );
+	mcp_write(MCP_GPIOB, val | LCD_EN);
 
 	mcp_write(MCP_GPIOB, val);
 }
 
 static void lcd_write_cmd(uint8_t cmd)
 {
-    /* write high nibble */
-	lcd_pulse( LCD_BL | (cmd >> 4)   );
-	
-    /* write low nibble */
-    lcd_pulse( LCD_BL | (cmd & 0x0F) );
+	/* write high nibble */
+	lcd_pulse(LCD_BL | (cmd >> 4));
 
-    LCD_DELAY;
+	/* write low nibble */
+	lcd_pulse(LCD_BL | (cmd & 0x0F));
 
+	LCD_DELAY;
 }
 
 static void lcd_write_data(uint8_t data)
 {
 	lcd_busy_wait();
 
-    /* write high nibble */
-	lcd_pulse( LCD_BL | LCD_RS | (data >> 4)   );
+	/* write high nibble */
+	lcd_pulse(LCD_BL | LCD_RS | (data >> 4));
 
 	lcd_busy_wait();
 
-    /* write low nibble */
-    lcd_pulse( LCD_BL | LCD_RS | (data & 0x0F) );	
+	/* write low nibble */
+	lcd_pulse(LCD_BL | LCD_RS | (data & 0x0F));
 }
 
 static void lcd_init(void)
 {
 	/* enable 4 bit mode */
 	LCD_DELAY;
-	lcd_pulse( 0x03 );
+	lcd_pulse(0x03);
 	LCD_DELAY;
-	lcd_pulse( 0x03 );
+	lcd_pulse(0x03);
 	LCD_DELAY;
-	lcd_pulse( 0x03 );
+	lcd_pulse(0x03);
 	LCD_DELAY;
-	lcd_pulse( 0x02 );
+	lcd_pulse(0x02);
 	LCD_DELAY;
 
-    /* function set; N = 1 for two rows, F = 0 for 5x8 display */
-	lcd_write_cmd( 0x28 );
-    /* display clear */
-	lcd_write_cmd( 0x01 );
+	/* function set; N = 1 for two rows, F = 0 for 5x8 display */
+	lcd_write_cmd(0x28);
+	/* display clear */
+	lcd_write_cmd(0x01);
 	LCD_DELAY;
-    
-    /* entry mode set; I/D = 1 for direction left to right, S = 0 for shift off */
-	lcd_write_cmd( 0x06 );
-    /* dislay on/off; D = 1 for display on, C = 1 for cursor on; B = 0 for blinking off*/
-	lcd_write_cmd( 0x0E );
-	
+
+	/* entry mode set; I/D = 1 for direction left to right, S = 0 for shift off */
+	lcd_write_cmd(0x06);
+	/* dislay on/off; D = 1 for display on, C = 1 for cursor on; B = 0 for blinking off*/
+	lcd_write_cmd(0x0E);
 }
 
-__attribute__((constructor))	// init is called when library is loaded
-void piface_init(void)
+__attribute__((constructor)) // init is called when library is loaded
+void
+piface_init(void)
 {
 	spi_init();
 	mcp_init();
@@ -194,15 +198,18 @@ uint8_t piface_getc(void)
 
 void piface_putc(char c)
 {
-	if( 0<= c && c <= 9){
+	if (0 <= c && c <= 9)
+	{
 		c += 0x30;
 	}
 
-	if( cursorPosition == 16){
+	if (cursorPosition == 16)
+	{
 		lcd_write_cmd(0x80 | 0x40);
 	}
-	else if(cursorPosition == 32){
-		lcd_write_cmd(0x80);
+	else if (cursorPosition == 32)
+	{
+		lcd_write_cmd(0x80);	
 		cursorPosition = 0;
 	}
 	LCD_DELAY;
@@ -214,37 +221,46 @@ void piface_putc(char c)
 
 void piface_puts(char s[])
 {
-    for(int i = 0 ; i < strlen(s); i++){
-		if(s[i] == '\n'){
+	//piface_switchLine();
+	for (int i = 0; i < strlen(s); i++)
+	{
+		if (s[i] == '\n')
+		{
 			piface_switchLine();
 		}
-		else {
+		else
+		{
 			piface_putc(s[i]);
 		}
 	}
 }
 
 void piface_delay(int cycles)
-{   
-    while (cycles-- > 0){
-        asm("");
-    };
+{
+	while (cycles-- > 0)
+	{
+		asm("");
+	};
 }
 
 void piface_clear(void)
 {
-    /* clear display */
+	/* clear display */
 	lcd_write_cmd(0x01);
 	LCD_DELAY;
 }
 void piface_switchLine(void)
 {
-	if( 0 <= cursorPosition && cursorPosition <= 16){
+	lcd_busy_wait();
+	if (0 <= cursorPosition && cursorPosition <= 16)
+	{
 		lcd_write_cmd(0x80 | 0x40);
 		cursorPosition = 17;
 	}
-	else if(17 <= cursorPosition && cursorPosition <= 32){
+	else if (17 <= cursorPosition && cursorPosition <= 32)
+	{
 		lcd_write_cmd(0x80);
 		cursorPosition = 0;
 	}
+	LCD_DELAY;
 }

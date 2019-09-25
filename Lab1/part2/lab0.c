@@ -8,7 +8,8 @@
 
 #include <rpi3.h>
 #include <stdio.h>
-#include <time.h>
+#include "iregister.h"
+iRegister *GPIO_GPFSEL1,*GPIO_GPSET0,* GPIO_GPCLR0;
 void delay(int cycles)
 {   
     while (cycles-- > 0){
@@ -18,22 +19,30 @@ void delay(int cycles)
 
 int main()
 {
+    GPIO_GPFSEL1 = &GPIO->GPFSEL1;
+    GPIO_GPSET0 = &GPIO->GPSET0;
+    GPIO_GPCLR0 = &GPIO->GPCLR0;
+
     volatile int delayTime = 1000;
     /* Enable GPIO16 as an output */
-    GPIO->GPFSEL1 |= (1 << 18);
+    setBit(18, GPIO_GPFSEL1);
+    //GPIO->GPFSEL1 |= (1 << 18); 
      
     /* Turn LED on */
-    GPIO->GPSET0 |= (1 << 16);
+    setBit(16,GPIO_GPSET0);
+    //GPIO->GPSET0 |= (1 << 16);
     
     while(1) 
     {
         /* Iteratively turn on and off the LED */
         delay(1000000);
         /* Turn LED off */
-        GPIO->GPCLR0 |= (1 << 16);
+        setBit(16,GPIO_GPCLR0);
+        //GPIO->GPCLR0 |= (1 << 16);
         delay(delayTime);
         /* Turn LED on */
-        GPIO->GPSET0 |= (1 << 16);
+        setBit(16,GPIO_GPSET0);
+        //GPIO->GPSET0 |= (1 << 16);
 
         delayTime *= 2;
     }
