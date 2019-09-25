@@ -202,7 +202,7 @@ void piface_putc(char c)
 	{
 		c += 0x30;
 	}
-
+	lcd_busy_wait();
 	if (cursorPosition == 16)
 	{
 		lcd_write_cmd(0x80 | 0x40);
@@ -221,7 +221,7 @@ void piface_putc(char c)
 
 void piface_puts(char s[])
 {
-	//piface_switchLine();
+
 	for (int i = 0; i < strlen(s); i++)
 	{
 		if (s[i] == '\n')
@@ -235,18 +235,12 @@ void piface_puts(char s[])
 	}
 }
 
-void piface_delay(int cycles)
-{
-	while (cycles-- > 0)
-	{
-		asm("");
-	};
-}
-
 void piface_clear(void)
 {
 	/* clear display */
+	lcd_busy_wait();
 	lcd_write_cmd(0x01);
+	cursorPosition = 0;
 	LCD_DELAY;
 }
 void piface_switchLine(void)

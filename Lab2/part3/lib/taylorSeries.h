@@ -1,8 +1,8 @@
 #include <stdio.h>
 
 typedef struct  {
-int expInt;
-int expFraction;
+unsigned long expInt;
+unsigned int expFraction;
 }ExpStruct;
 
 //typedef struct expStruct ExpStruct;
