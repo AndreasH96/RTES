@@ -9,11 +9,10 @@
 #include "piface.h"
 #include "taylorSeries.h"
 #include "led.h"
+#include <time.h>
 
 /*------Function Declaration------*/
-
 void lcd_Execution();
-
 /*--------------------------------*/
 
 volatile uint8_t taylorInput = 1;
@@ -22,22 +21,21 @@ void lcd_Execution()
 {
     piface_clear();
     ExpStruct *result = iexp(taylorInput);
-    char printString[17];
-    sprintf(printString, "%d: %d.%d\n", taylorInput, result->expInt, result->expFraction);
+    char printString[31];
+    sprintf(printString, "%d: %ld.%d", taylorInput, result->expInt, result->expFraction);
     piface_puts(printString);
     taylorInput += 1;
 }
 
 int main()
 {
-
     led_init();
     
-    for (int i = 0; i < 100; i++)
-    {
+    for (int i = 0; i < 20; i++)
+    {   
         led_blink();
         lcd_Execution();
+        delay(DELAYTIME);
     }
-
     return 0;
 }
