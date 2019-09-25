@@ -64,17 +64,9 @@ necessary.
 
 void piface_puts(char[]);
 
-/* void piface_delay(int cycles)
-@description Performs a no-operation for int cycles
 
-@pre-condition cycles != null && cycles > 0
 
-@post-condition the running thread is paused for the given amount of cycles. No register values
-are affected. 
 
-*/
-
-void piface_delay(int);
 
 /* void piface_clear(void)
 @description Clears the PiFace Control & Display 2 screen and sets cursor to 0
