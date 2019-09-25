@@ -221,7 +221,7 @@ void piface_putc(char c)
 
 void piface_puts(char s[])
 {
-	//piface_switchLine();
+
 	for (int i = 0; i < strlen(s); i++)
 	{
 		if (s[i] == '\n')

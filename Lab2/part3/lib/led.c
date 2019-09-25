@@ -29,13 +29,15 @@ void led_init()
     setBit(18, GPIO_GPFSEL1);
 }
 
-void led_blink()
+void led_blink(unsigned int deltaTime )
 {
-    /* Turn LED on */
-    setBit(16, GPIO_GPSET0);
-    /* Iteratively turn on and off the LED */
-    delay(DELAYTIME);
-    /* Turn LED off */
-    setBit(16, GPIO_GPCLR0);
+    if(deltaTime > 0 && deltaTime != NULL){
+        /* Turn LED on */
+        setBit(16, GPIO_GPSET0);
+        /* Iteratively turn on and off the LED */
+        delay(DELAYTIME - deltaTime);
+        /* Turn LED off */
+        setBit(16, GPIO_GPCLR0);
+    }
 
 }
