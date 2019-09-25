@@ -23,7 +23,9 @@ void setBit(int i, iRegister *theRegister)
 		theRegister->content |= (1 << i);
 	}
 	else{
-		printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.\n");
+		#if __x86_64__
+			printf("ERROR: Tried to call setBit(int, iRegister *) with illegal input.\n");
+		#endif
 	}
 }
 
@@ -40,7 +42,9 @@ int getBit(int i, iRegister *theRegister)
 	{
 		return ((unsigned int) (theRegister->content & (1 << i)) >> i);
 	}
-	printf("%s\n","ERROR: Tried to call getBit(int i, iRegister *theRegister) with illegal input.\n");
+	#if __x86_64__
+		printf("%s\n","ERROR: Tried to call getBit(int i, iRegister *theRegister) with illegal input.\n");
+	#endif
 	return -1;
 }
 
@@ -58,8 +62,10 @@ void assignNibble(int i, int value, iRegister *theRegister)
 		}
 	}
 	else{
-		printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.\n");
-	}
+		#if __x86_64__
+			printf("ERROR: Tried to call assignNibble(int, int, iRegister *) with illegal input.\n");
+		#endif
+		}
 }
 
 // First we make sure the i value is in the correct value range, then calculate at which bit the nibble starts at, then mask out the bits with a nibble of ones
@@ -119,6 +125,8 @@ void resetBit(int i, iRegister *r)
 		r->content &= ~(1 << i);
 	}
 	else{
-		printf("ERROR: Tried to call resetBit(int, iRegister *) with illegal input."); 
+		#if __x86_64__
+			printf("ERROR: Tried to call resetBit(int, iRegister *) with illegal input."); 
+		#endif
 	}
 }
