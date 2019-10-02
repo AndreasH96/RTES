@@ -32,7 +32,7 @@ char*		taskgetstate(void);
 void		tasksystem(void);
 unsigned int	taskdelay(unsigned int);
 unsigned int	taskid(void);
-
+void taskswitch(void);
 struct Tasklist	/* used internally */
 {
 	Task	*head;
