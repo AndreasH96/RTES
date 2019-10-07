@@ -33,7 +33,7 @@ $(LIB): $(OFILES)
 primes: primes.o $(LIB)
 	$(CC) -o primes primes.o $(LIB)
 
-taskTest	: taskTest.o $(LIB)
+taskTest: taskTest.o $(LIB)
 	$(CC) -o taskTest taskTest.o $(LIB)
 
 tcpproxy: tcpproxy.o $(LIB)
