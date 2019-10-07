@@ -12,14 +12,17 @@ char workingPrimesPath[INT8_MAX];
 
 
 void testPrimes(){
-       
-    primesFile = popen("./primes 100","r");
+    
+    // Executes the primes file with the input of 100
+    primesFile = popen("./primes 100","r"); 
+    
+    // Executes the working_primes file with the input of 100
     workingPrimesFile = popen("./working_primes 100","r");
-    int i =1;
-    CU_ASSERT(1 == 1);
+    
+    // Opens each line from primesPath and compares 
+    // it to the lines of workingPrimesPath
     while (fgets(primesPath,INT8_MAX,primesFile) != NULL){
         fgets(workingPrimesPath,INT8_MAX,workingPrimesFile);
-        
         CU_ASSERT(strcmp(primesPath,workingPrimesPath) == 0);
     }
     
@@ -27,6 +30,8 @@ void testPrimes(){
 
 int main()
 {
+    // Creates the CUnit test suites and tests
+    // Then runs the tests
     CU_initialize_registry();
     CU_pSuite testSuite = CU_add_suite("testPrimes", 0,0);
     CU_add_test(testSuite, "Primes test", testPrimes);
