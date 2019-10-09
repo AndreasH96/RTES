@@ -19,8 +19,14 @@ public class Philosophers {
         for (int i = 0; i < NUM_PHIL; i++)
             forks[i] = new Object();
 
-        for (int i = 0; i < NUM_PHIL; i++)
-            phils[i] = new Philosopher(i, forks[i], forks[(i + 1) % NUM_PHIL]);
+        for (int i = 0; i < NUM_PHIL; i++){
+            if(i == 0){
+                phils[i] = new Philosopher(i, forks[i-1],forks[i]);
+            }
+            else{
+                phils[i] = new Philosopher(i, forks[i], forks[(i + 1) % NUM_PHIL]);
+            }
+        }    
         // Start all Philosopher threads
         for (int i = 0; i < NUM_PHIL; i++)
             phils[i].start();
@@ -42,13 +48,32 @@ public class Philosophers {
         } catch (InterruptedException e) {
             System.out.println("main thread interrupted");
         }
+        // Print stats
         System.out.println("\nPhilosopher id:  Eaten   Thought     Waited");
         for (int i = 0; i < NUM_PHIL; i++) {
             int[] counterArray = phils[i].getEatThinkWaitCounterArray();
             System.out.println(i + "                " + counterArray[0] + "         " + counterArray[1] + "           "
                     + counterArray[2]);
         }
-        // Print stats
+  
+    }
+
+
+    static class Fork {
+        private int id;
+        private boolean available;
+
+        Fork(int id){
+            this.id = id;
+            this.available = true;
+        }
+
+        public void lock(){
+            this.available = false;
+        }
+        public void release(){
+            this.available = true;
+        }
     }
 
     static class Philosopher extends Thread {
@@ -78,9 +103,9 @@ public class Philosophers {
             System.out.println("Philosopher " + id + " is eating.");
             this.eatCounter++;
             try {
-                Thread.sleep(1);
+                Thread.sleep(1);forks[i+1]
             } catch (Exception e) {
-                System.out.println("eat thread interrupted");
+                System.out.p,this.rightForkrintln("eat thread interrupted");
             }
 
         }
@@ -114,13 +139,15 @@ public class Philosophers {
             while (this.notTerminated) {
                 think();
                 waiting();
-                synchronized (this.leftFork) {
-                    System.out.println("Philosopher " + id + " picked up left fork");
-                    synchronized (this.rightFork) {
-                        System.out.println("Philosopher " + id + " picked up right fork");
-                        eat();
+                
+                    synchronized (this.leftFork) {
+                        System.out.println("Philosopher " + id + " picked up left fork");
+                        synchronized (this.rightFork) {
+                            System.out.println("Philosopher " + id + " picked up right fork");
+                            eat();
+                        }
                     }
-                }
+                
 
             }
             System.out.println("Philosopher " + id + " is full and tired of thinking(read terminated)");
