@@ -26,8 +26,9 @@ void lcd_Execution()
     piface_clear();                             // Clear the display from old characters
     ExpStruct *result = iexp(taylorInput);      // Calc the really bad approx of e^n
     char printStringLCD[16];
-    sprintf(printStringLCD, "%d:%ld.%d\n", taylorInput, result->expInt, result->expFraction);   // Format the values to string
+    sprintf(printStringLCD, "%d:%d.%d\n", taylorInput, result->expInt, result->expFraction);   // Format the values to string
     piface_puts(printStringLCD);                // Print the string to the LCD
+
     free(result);                               // Free the allocated memory
     taylorInput += 1;                           // Increase the input 'till next time we call the function
 }
@@ -44,7 +45,7 @@ int main()
     // Init the LED
     led_init();
 
-    // We calculte how long in clockcycles the lcd_Execution() function takes to execute, 
+    // We calculate how long in clockcycles the lcd_Execution() function takes to execute, 
     // in order to have an dynamic delay in order to make the LED blink with constant interval
     for (int i = 0; i < 100; i++)
     {   

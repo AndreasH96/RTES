@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-ExpStruct * iexp(int x){
+ExpStruct * iexp(unsigned int x){
     ExpStruct* eAprox = malloc(sizeof(ExpStruct));
     if(eAprox == NULL){
         return NULL;
@@ -22,7 +22,7 @@ ExpStruct * iexp(int x){
     return eAprox;
 }
 
-int powerOf(int base, int exp){
+unsigned int powerOf(unsigned int base,unsigned int exp){
     unsigned long retVal = 1;
     for(int i = 0; i<exp; i++){
         retVal *= base; 
