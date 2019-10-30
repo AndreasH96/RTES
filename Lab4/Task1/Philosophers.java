@@ -32,16 +32,17 @@ public class Philosophers {
             System.out.println("main thread interrupted");
         }
 
-        for (int i = 0; i < NUM_PHIL; i++)
-            phils[i].requestTerminate();
-        // Request termination
-        // Wait for all to finish
-        try {
-
-            Thread.sleep(50); // Idle here
-        } catch (InterruptedException e) {
-            System.out.println("main thread interrupted");
+        for (int i = 0; i < NUM_PHIL; i++){
+            // Request termination
+             phils[i].requestTerminate();
+            // Wait for all to finish
+            try {
+                phils[i].join();
+            } catch (Exception e) {
+                System.out.println("Failed to join task with id: " + i);
+            }
         }
+        
         System.out.println("\nPhilosopher id:  Eaten   Thought     Waited");
         for (int i = 0; i < NUM_PHIL; i++) {
             int[] counterArray = phils[i].getEatThinkWaitCounterArray();

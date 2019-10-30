@@ -12,20 +12,19 @@
 
 int main()
 {
-    /* Write to PiFace's LCD screen */    
-    piface_puts("Hello World!\n");
-
     volatile uint8_t taylorInput = 1;
     
     while (1)
     {
         piface_clear();
-        ExpStruct* result = iexp(taylorInput);
-        char printString [16];
-        sprintf(printString, "%d: %d.%d", taylorInput, result->expInt, result->expFraction);
-        piface_puts(printString);
+        ExpStruct *result = iexp(taylorInput);      // Calc the really bad approx of e^n 
+        char printStringLCD[16]  ;
+        sprintf(printStringLCD, "%d:%d.%d", taylorInput, result->expInt, result->expFraction);
+        piface_puts(printStringLCD);
         taylorInput +=1;
         piface_delay(10000000);
+
+        free(result);
         
     }
 

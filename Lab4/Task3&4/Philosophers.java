@@ -3,6 +3,17 @@
 import java.io.*;
 import java.util.*;
 
+
+
+/* 
+TASK 3: The proposed solution is to make one of the philosophers grab their 
+"right" fork first instead of the left fork. This solution was found at 
+https://www.baeldung.com/java-dining-philoshophers . 
+The solution works through breaking the cyclic execution which is the main reason
+for the deadline here.
+*/
+
+
 public class Philosophers {
     private static int NUM_PHIL;
     private static Object[] forks;
@@ -20,8 +31,8 @@ public class Philosophers {
             forks[i] = new Object();
 
         for (int i = 0; i < NUM_PHIL; i++){
-            if(i == 0){
-                phils[i] = new Philosopher(i, forks[i-1],forks[i]);
+            if(i == NUM_PHIL -1){
+                phils[i] = new Philosopher(i, forks[(i + 1) % NUM_PHIL],forks[i]);
             }
             else{
                 phils[i] = new Philosopher(i, forks[i], forks[(i + 1) % NUM_PHIL]);
@@ -33,21 +44,22 @@ public class Philosophers {
 
         try {
 
-            Thread.sleep(60000); // Idle here
+            Thread.sleep(5000); // Idle here
         } catch (InterruptedException e) {
             System.out.println("main thread interrupted");
         }
 
-        for (int i = 0; i < NUM_PHIL; i++)
-            phils[i].requestTerminate();
+        for (int i = 0; i < NUM_PHIL; i++){
         // Request termination
+         phils[i].requestTerminate();
         // Wait for all to finish
         try {
-
-            Thread.sleep(50); // Idle here
-        } catch (InterruptedException e) {
-            System.out.println("main thread interrupted");
+            phils[i].join();
+        } catch (Exception e) {
+            System.out.println("Failed to join task with id: " + i);
         }
+    }
+        
         // Print stats
         System.out.println("\nPhilosopher id:  Eaten   Thought     Waited");
         for (int i = 0; i < NUM_PHIL; i++) {
@@ -103,9 +115,9 @@ public class Philosophers {
             System.out.println("Philosopher " + id + " is eating.");
             this.eatCounter++;
             try {
-                Thread.sleep(1);forks[i+1]
+                Thread.sleep(1);
             } catch (Exception e) {
-                System.out.p,this.rightForkrintln("eat thread interrupted");
+                System.out.println("eat thread interrupted");
             }
 
         }
@@ -136,7 +148,7 @@ public class Philosophers {
         }
 
         public void run() {
-            while (this.notTerminated) {
+            while (notTerminated) {
                 think();
                 waiting();
                 

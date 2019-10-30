@@ -1,0 +1,13 @@
+Task2: 
+The image also put in this folder shows that the different philosophers
+all are holding their left fork at the same time. 
+This is causes a deadlock since all philosophers are waiting for their right
+fork to be available. They are also very ignorant of the fact that 
+someone needs to drop their left fork for the deadlock to be able to be unlocked.
+
+
+On a side note, we noticed that when running the program in the terminal 
+of a ubuntu-based linux laptop, the deadlock appeared every time.
+But when we ran the program through the java execution within Visual Studio Code,
+the deadlock only occurred the first time. If we restarted the task then the deadlock
+would not appear until we closed the VSCode terminal and opened a new one.
