@@ -91,3 +91,4 @@ If the cursor is between 17 and 32 the line will be changed to the upper one.
 */
 
 void piface_switchLine(void);
+

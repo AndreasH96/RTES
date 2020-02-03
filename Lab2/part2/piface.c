@@ -197,30 +197,26 @@ void piface_putc(char c)
 	if( 0<= c && c <= 9){
 		c += 0x30;
 	}
-
+	/*
 	if( cursorPosition == 16){
 		lcd_write_cmd(0x80 | 0x40);
 	}
 	else if(cursorPosition == 32){
 		lcd_write_cmd(0x80);
 		cursorPosition = 0;
-	}
+	}*/
 	LCD_DELAY;
 	/* write character */
 	lcd_write_data(c);
 	LCD_DELAY;
-	cursorPosition += 1;
+	//cursorPosition += 1;
 }
 
 void piface_puts(char s[])
 {
+	lcd_write_cmd(0x80);
     for(int i = 0 ; i < strlen(s); i++){
-		if(s[i] == '\n'){
-			piface_switchLine();
-		}
-		else {
-			piface_putc(s[i]);
-		}
+		piface_putc(s[i]);
 	}
 }
 

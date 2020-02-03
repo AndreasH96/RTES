@@ -27,6 +27,6 @@ void led_init();
 @post-condition The LED blinks one time
 
 */
-void led_blink(unsigned int);
+void led_blink();
 
 #endif

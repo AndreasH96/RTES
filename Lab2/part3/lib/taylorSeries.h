@@ -20,6 +20,6 @@ expFraction will be the two first decimal values of the result.
 1. Call the function
 
 */
-ExpStruct * iexp ( int );
+ExpStruct * iexp (unsigned int, int*);
 
-int powerOf(int, int);
+unsigned int powerOf(unsigned int, unsigned int, int*);

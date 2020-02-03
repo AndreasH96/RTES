@@ -13,6 +13,8 @@
 
 iRegister *GPIO_GPFSEL1, *GPIO_GPSET0, *GPIO_GPCLR0;
 
+volatile uint8_t toggle = 0;
+
 void delay(int cycles)
 {
     while (cycles-- > 0)
@@ -29,15 +31,12 @@ void led_init()
     setBit(18, GPIO_GPFSEL1);
 }
 
-void led_blink(unsigned int deltaTime )
+void led_blink()
 {
-    if(deltaTime > 0 && deltaTime != NULL){
-        /* Turn LED on */
-        setBit(16, GPIO_GPSET0);
-        /* Iteratively turn on and off the LED */
-        delay(DELAYTIME - deltaTime);
-        /* Turn LED off */
-        setBit(16, GPIO_GPCLR0);
-    }
+
+    setBit(16, GPIO_GPSET0);
+    delay(1000);
+    setBit(16, GPIO_GPCLR0);
+    delay(1000);
 
 }

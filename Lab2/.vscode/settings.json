@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "string.h": "c",
+        "led.h": "c",
+        "taylorseries.h": "c"
     }
 }
